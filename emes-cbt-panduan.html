@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panduan Pengguna — Emes CBT v7.0</title>
+<link rel="icon" type="image/png" href="https://i.imgur.com/dYwR4Jp.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & VARS ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --g:#10b981;--gd:#047857;--gdd:#065f46;
+  --gl:#d1fae5;--gs:#ecfdf5;--gb:#f0fdf4;
+  --ink:#0f1a13;--ink2:#1c3226;--muted:#4d6b5a;--faint:#8fafa0;
+  --border:#ddf0e6;--border2:#e5e7eb;
+  --white:#fff;--r:8px;
+  --sidebar-w:268px;
+  --nav-h:60px;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;color:var(--ink);background:var(--white);line-height:1.6}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:#f0fdf4}
+::-webkit-scrollbar-thumb{background:var(--g);border-radius:3px}
+
+/* ===== TOP NAV ===== */
+.topnav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:var(--nav-h);
+  background:var(--gdd);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;
+  box-shadow:0 2px 12px rgba(0,0,0,.2);
+}
+.topnav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.topnav-brand img{width:30px;height:30px;filter:brightness(0) invert(1);opacity:.9}
+.topnav-brand-name{font-weight:800;font-size:17px;color:#fff;letter-spacing:-0.4px}
+.topnav-brand-sub{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:0.8px;text-transform:uppercase;margin-left:6px}
+.topnav-right{display:flex;align-items:center;gap:12px}
+.topnav-ver{font-size:12px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);padding:3px 10px;border-radius:20px;font-weight:600}
+.topnav-home{font-size:13px;color:rgba(255,255,255,.8);text-decoration:none;font-weight:500;transition:color .2s}
+.topnav-home:hover{color:#fff}
+.sidebar-toggle{display:none;background:none;border:none;cursor:pointer;color:#fff;padding:4px}
+.sidebar-toggle svg{width:22px;height:22px}
+
+/* ===== LAYOUT ===== */
+.layout{display:flex;padding-top:var(--nav-h);min-height:100vh}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width:var(--sidebar-w);
+  position:fixed;top:var(--nav-h);left:0;bottom:0;
+  overflow-y:auto;
+  background:var(--gb);
+  border-right:1px solid var(--border);
+  padding:20px 0 40px;
+  z-index:100;
+}
+.sidebar-section{margin-bottom:4px}
+.sidebar-section-label{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  color:var(--faint);padding:12px 20px 6px;
+}
+.sidebar-link{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 20px;
+  font-size:13px;font-weight:500;color:var(--muted);
+  text-decoration:none;cursor:pointer;
+  transition:all .18s;border-left:3px solid transparent;
+}
+.sidebar-link:hover{background:var(--gl);color:var(--gdd);border-left-color:var(--g)}
+.sidebar-link.active{background:var(--gl);color:var(--gdd);font-weight:700;border-left-color:var(--gdd)}
+.sidebar-link svg{width:14px;height:14px;flex-shrink:0}
+.sidebar-link .badge{margin-left:auto;font-size:10px;background:var(--gdd);color:#fff;padding:1px 7px;border-radius:10px}
+
+/* ===== MAIN CONTENT ===== */
+.main{
+  margin-left:var(--sidebar-w);
+  flex:1;
+  max-width:900px;
+  padding:40px 48px 80px;
+}
+
+/* ===== SECTIONS ===== */
+.doc-section{margin-bottom:72px;scroll-margin-top:80px}
+.doc-section:first-child{margin-top:0}
+
+/* ===== TYPOGRAPHY ===== */
+h1.doc-title{
+  font-size:36px;font-weight:800;letter-spacing:-1.2px;color:var(--ink);
+  line-height:1.1;margin-bottom:12px;
+}
+h1.doc-title span{color:var(--gd)}
+.doc-subtitle{font-size:17px;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:28px;max-width:600px}
+h2.sec-title{
+  font-size:24px;font-weight:800;letter-spacing:-0.8px;color:var(--ink);
+  margin-bottom:8px;padding-bottom:10px;
+  border-bottom:2px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+h2.sec-title svg{width:22px;height:22px;color:var(--gd);flex-shrink:0}
+h3.sub-title{font-size:17px;font-weight:700;color:var(--ink2);margin:28px 0 10px;display:flex;align-items:center;gap:8px}
+h3.sub-title svg{width:16px;height:16px;color:var(--g);flex-shrink:0}
+p{font-size:14.5px;color:var(--muted);line-height:1.75;margin-bottom:12px;font-weight:400}
+p strong{color:var(--ink);font-weight:600}
+
+/* ===== STEPS ===== */
+.steps{display:flex;flex-direction:column;gap:0;margin:20px 0}
+.step{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none}
+.step-num{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--gdd);color:#fff;
+  font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:0 3px 10px rgba(4,120,87,.3);
+}
+.step-body{}
+.step-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.step-desc{font-size:14px;color:var(--muted);line-height:1.65;font-weight:300}
+.step-desc strong{color:var(--ink);font-weight:600}
+
+/* ===== CALLOUTS ===== */
+.callout{
+  border-radius:var(--r);padding:14px 16px;
+  display:flex;gap:12px;align-items:flex-start;
+  margin:16px 0;font-size:13.5px;line-height:1.6;
+}
+.callout svg{width:16px;height:16px;flex-shrink:0;margin-top:2px}
+.callout-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
+.callout-info svg{color:#3b82f6}
+.callout-warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+.callout-warn svg{color:#f59e0b}
+.callout-success{background:var(--gs);border:1px solid var(--gl);color:var(--gdd)}
+.callout-success svg{color:var(--g)}
+.callout-danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.callout-danger svg{color:#ef4444}
+.callout-body strong{font-weight:700}
+
+/* ===== CODE ===== */
+code{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  background:#f1f5f1;color:#065f46;
+  padding:2px 6px;border-radius:4px;font-weight:500;
+}
+.code-block{
+  background:#1a2e22;border-radius:var(--r);
+  padding:16px 20px;overflow-x:auto;
+  margin:14px 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;line-height:1.8;color:#86efac;
+}
+.code-block .comment{color:#4a7a5a}
+.code-block .keyword{color:#a78bfa}
+.code-block .string{color:#fbbf24}
+.code-block .fn{color:#60d394}
+.code-label{font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px}
+
+/* ===== TABLES ===== */
+.doc-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+.doc-table th{background:var(--gdd);color:#fff;padding:10px 14px;text-align:left;font-weight:700;font-size:12px;letter-spacing:0.3px}
+.doc-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top}
+.doc-table tr:last-child td{border-bottom:none}
+.doc-table tr:nth-child(even) td{background:var(--gb)}
+.doc-table td strong{color:var(--ink);font-weight:600}
+.doc-table td code{font-size:11px}
+
+/* ===== ROLE CARDS ===== */
+.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0}
+.role-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;border-top:3px solid}
+.role-card.admin{border-top-color:var(--gdd)}
+.role-card.guru{border-top-color:#3b82f6}
+.role-card.proktor{border-top-color:#f59e0b}
+.role-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.role-card.admin .role-label{color:var(--gdd)}
+.role-card.guru .role-label{color:#1d4ed8}
+.role-card.proktor .role-label{color:#b45309}
+.role-name{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:10px}
+.role-perm{font-size:12.5px;color:var(--muted);display:flex;align-items:flex-start;gap:6px;margin-bottom:5px;line-height:1.4}
+.role-perm svg{width:12px;height:12px;flex-shrink:0;margin-top:2px}
+.role-card.admin .role-perm svg{color:var(--g)}
+.role-card.guru .role-perm svg{color:#3b82f6}
+.role-card.proktor .role-perm svg{color:#f59e0b}
+
+/* ===== FEATURE LIST ===== */
+.feat-list{display:flex;flex-direction:column;gap:12px;margin:16px 0}
+.feat-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--gb);border-radius:var(--r);border:1px solid var(--border)}
+.feat-item-icon{width:34px;height:34px;background:var(--gl);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.feat-item-icon svg{width:16px;height:16px;color:var(--gdd)}
+.feat-item-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.feat-item-desc{font-size:13px;color:var(--muted);line-height:1.5;font-weight:300}
+
+/* ===== SETTING ROWS ===== */
+.setting-row{padding:14px 0;border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:flex-start}
+.setting-row:last-child{border-bottom:none}
+.setting-key{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--gdd);background:var(--gs);padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;min-width:180px}
+.setting-info{}
+.setting-label{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.setting-desc{font-size:13px;color:var(--muted);font-weight:300}
+.setting-default{font-size:11px;color:var(--faint);margin-top:3px}
+
+/* ===== SHEET TABLE ===== */
+.sheet-card{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:12px 0}
+.sheet-header{background:var(--gdd);color:#fff;padding:10px 16px;font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:8px}
+.sheet-header svg{width:14px;height:14px;opacity:.8}
+.sheet-cols{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;background:var(--gb)}
+.sheet-col{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;background:var(--white);color:var(--gdd);padding:3px 8px;border-radius:4px;border:1px solid var(--border)}
+.sheet-col.key{background:var(--gdd);color:#fff;border-color:transparent}
+
+/* ===== BADGE ===== */
+.badge-green{background:var(--gl);color:var(--gdd);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.badge-blue{background:#dbeafe;color:#1e40af;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.badge-amber{background:#fef3c7;color:#92400e;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.badge-gray{background:#f3f4f6;color:#4b5563;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+
+/* ===== DIVIDER ===== */
+.divider{height:1px;background:var(--border);margin:32px 0}
+hr{border:none;border-top:1px solid var(--border);margin:24px 0}
+
+/* ===== TOC HERO ===== */
+.doc-hero{
+  background:linear-gradient(135deg,var(--gdd) 0%,#028040 60%,var(--g) 100%);
+  border-radius:14px;padding:36px;margin-bottom:48px;position:relative;overflow:hidden;
+}
+.doc-hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+}
+.doc-hero h1{font-size:28px;font-weight:800;color:#fff;letter-spacing:-0.8px;margin-bottom:8px;position:relative}
+.doc-hero p{color:rgba(255,255,255,.75);font-size:15px;font-weight:300;margin-bottom:0;position:relative}
+.doc-hero .meta{display:flex;gap:12px;margin-top:18px;position:relative}
+.doc-hero .meta span{font-size:12px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);padding:4px 12px;border-radius:20px;font-weight:600}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .main{padding:28px 24px 60px}
+  .role-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform .3s}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .sidebar-toggle{display:block}
+  .layout{flex-direction:column}
+  .topnav-brand-sub{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div style="display:flex;align-items:center;gap:16px">
+    <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="#" class="topnav-brand">
+      <img src="https://i.imgur.com/dYwR4Jp.png" alt="Emes CBT">
+      <span class="topnav-brand-name">Emes CBT</span>
+      <span class="topnav-brand-sub">Dokumentasi</span>
+    </a>
+  </div>
+  <div class="topnav-right">
+    <span class="topnav-ver">v7.0</span>
+    <a href="emes-cbt-landing.html" class="topnav-home">← Kembali ke Beranda</a>
+  </div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Memulai</div>
+    <a class="sidebar-link active" href="#pengantar" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>
+      Pengantar
+    </a>
+    <a class="sidebar-link" href="#instalasi" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Instalasi & Setup
+    </a>
+    <a class="sidebar-link" href="#login" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Login & Akses
+    </a>
+    <a class="sidebar-link" href="#role" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Peran & Hak Akses
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Manajemen Data</div>
+    <a class="sidebar-link" href="#siswa" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Data Siswa
+    </a>
+    <a class="sidebar-link" href="#soal" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Bank Soal
+    </a>
+    <a class="sidebar-link" href="#paket" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+      Paket Ujian
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Pelaksanaan Ujian</div>
+    <a class="sidebar-link" href="#monitoring" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      Monitoring Ujian
+    </a>
+    <a class="sidebar-link" href="#token" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+      Token Ujian
+    </a>
+    <a class="sidebar-link" href="#siswa-ujian" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Panduan Siswa
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Hasil & Analisis</div>
+    <a class="sidebar-link" href="#nilai" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Rekap Nilai
+    </a>
+    <a class="sidebar-link" href="#analisa" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18h8"/><path d="M3 21h18"/><path d="M14 21v-4"/><circle cx="17" cy="7" r="3"/></svg>
+      Analisa Butir Soal
+    </a>
+    <a class="sidebar-link" href="#koreksi" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Koreksi Uraian
+    </a>
+    <a class="sidebar-link" href="#cetak" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Cetak Dokumen <span class="badge">Lisensi</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Konfigurasi</div>
+    <a class="sidebar-link" href="#pengaturan" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Pengaturan Sistem
+    </a>
+    <a class="sidebar-link" href="#faq" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 11V5"/><circle cx="12" cy="3" r="2"/></svg>
+      FAQ Chatbot
+    </a>
+    <a class="sidebar-link" href="#backup" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Backup & Reset
+    </a>
+    <a class="sidebar-link" href="#lisensi" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Lisensi NPSN
+    </a>
+    <a class="sidebar-link" href="#sheet" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Struktur Sheet
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main" id="main-content">
+
+  <!-- HERO -->
+  <div class="doc-hero">
+    <h1>Panduan Pengguna Emes CBT</h1>
+    <p>Dokumentasi lengkap instalasi, konfigurasi, dan penggunaan seluruh fitur Emes CBT untuk administrator, guru, dan pengawas.</p>
+    <div class="meta">
+      <span>Versi 7.0</span>
+      <span>© Emes EduTech</span>
+      <span>Google Apps Script</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 1. PENGANTAR -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="pengantar">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>
+      Pengantar
+    </h2>
+    <p><strong>Emes CBT</strong> adalah platform Computer-Based Test (ujian berbasis komputer) yang berjalan sepenuhnya di atas <strong>Google Sheets</strong> dan <strong>Google Apps Script</strong>. Tidak memerlukan server hosting, domain, atau database eksternal — cukup satu akun Google.</p>
+    <p>Sistem ini dirancang khusus untuk kebutuhan ujian di sekolah Indonesia, dengan antarmuka berbahasa Indonesia, fitur anti-kecurangan, dan kemampuan cetak dokumen resmi berlisensi.</p>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      Arsitektur Sistem
+    </h3>
+    <div class="feat-list">
+      <div class="feat-item">
+        <div class="feat-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <div><div class="feat-item-title">Database → Google Sheets</div><div class="feat-item-desc">Semua data (siswa, soal, nilai, log) disimpan di sheet dalam spreadsheet Google milik Anda. Data 100% ada di akun Google Anda sendiri.</div></div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div><div class="feat-item-title">Backend → Google Apps Script (Library)</div><div class="feat-item-desc">Logika aplikasi berjalan sebagai Library Apps Script. Kode terlindungi — pengguna tidak perlu menyalin atau memodifikasi kode apapun.</div></div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div><div class="feat-item-title">Frontend → Web App dari Apps Script</div><div class="feat-item-desc">Antarmuka disajikan melalui URL Web App yang dibuat saat deploy. URL ini diakses oleh admin maupun siswa melalui browser biasa.</div></div>
+      </div>
+    </div>
+
+    <div class="callout callout-success">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <div class="callout-body"><strong>Gratis sepenuhnya.</strong> Tidak ada biaya berlangganan, biaya server, atau biaya hosting. Emes CBT berjalan dalam kuota gratis Google Apps Script.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 2. INSTALASI -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="instalasi">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Instalasi & Setup
+    </h2>
+    <p>Proses instalasi dilakukan sekali saja. Ikuti langkah-langkah berikut secara berurutan.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Salin Template Spreadsheet</div>
+          <div class="step-desc">
+            Klik link berikut untuk menyalin template ke Google Drive Anda:<br><br>
+            <a href="https://docs.google.com/spreadsheets/d/1dmPcoZAOanyhjkmyKupXqFpr0LuCX6KKXu4DkK8pxFw/copy" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--gdd);color:#fff;padding:9px 18px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px;margin-top:4px">
+              <svg style="width:14px;height:14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Salin Template ke Google Drive
+            </a><br><br>
+            Google akan meminta konfirmasi. Klik <strong>"Buat salinan"</strong>. Spreadsheet akan muncul di Google Drive Anda dengan nama <em>"Salinan dari Emes CBT Template"</em>. Anda bisa mengganti namanya.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Buka Apps Script Editor</div>
+          <div class="step-desc">Di spreadsheet yang sudah disalin, klik menu <strong>Ekstensi → Apps Script</strong>. Editor Apps Script akan terbuka di tab baru.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Pastikan Kode di Code.gs Sudah Benar</div>
+          <div class="step-desc">
+            File <code>Code.gs</code> di editor harus berisi tepat dua baris berikut. Jika template sudah benar, kode ini sudah ada.
+            <div class="code-label" style="margin-top:12px">Code.gs</div>
+            <div class="code-block"><span class="keyword">function</span> <span class="fn">doGet</span>(e)  { <span class="keyword">return</span> EmesCBTApp.doGet(e);  }
+<span class="keyword">function</span> <span class="fn">doPost</span>(e) { <span class="keyword">return</span> EmesCBTApp.doPost(e); }</div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Jalankan Setup Awal (Sekali Saja)</div>
+          <div class="step-desc">
+            Di editor Apps Script, tambahkan fungsi berikut sementara ke <code>Code.gs</code>, lalu pilih fungsi <code>runSetup</code> dari dropdown dan klik <strong>Jalankan</strong>:
+            <div class="code-label" style="margin-top:12px">Tambahkan sementara di Code.gs</div>
+            <div class="code-block"><span class="keyword">function</span> <span class="fn">runSetup</span>() { EmesCBTApp.setupSpreadsheet(); }</div>
+            Izinkan akses yang diminta Google (akses spreadsheet). Setelah berjalan, akan muncul dialog konfirmasi bahwa setup berhasil dan semua sheet telah dibuat. <strong>Hapus fungsi runSetup setelah selesai.</strong>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Deploy sebagai Web App</div>
+          <div class="step-desc">
+            Di editor Apps Script, klik <strong>Deploy → Deployment baru</strong>.<br>
+            Isi konfigurasi:
+            <table class="doc-table" style="margin-top:12px">
+              <tr><th>Pengaturan</th><th>Nilai</th></tr>
+              <tr><td><strong>Tipe deployment</strong></td><td>Web App</td></tr>
+              <tr><td><strong>Jalankan sebagai</strong></td><td>Saya (akun Google Anda)</td></tr>
+              <tr><td><strong>Siapa yang punya akses</strong></td><td>Semua orang</td></tr>
+            </table>
+            Klik <strong>Deploy</strong>. Salin <strong>URL Web App</strong> yang diberikan — ini adalah alamat aplikasi Emes CBT Anda.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-title">Login Pertama & Ubah Password</div>
+          <div class="step-desc">
+            Buka URL Web App di browser. Login dengan kredensial default:
+            <table class="doc-table" style="margin-top:12px;max-width:300px">
+              <tr><th>Field</th><th>Nilai Default</th></tr>
+              <tr><td>Username</td><td><code>admin</code></td></tr>
+              <tr><td>Password</td><td><code>admin123</code></td></tr>
+            </table>
+            <div class="callout callout-danger" style="margin-top:12px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <div><strong>Segera ubah password default!</strong> Masuk ke menu Sistem → Pengaturan setelah login pertama.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div><strong>Update aplikasi:</strong> Jika ada versi baru Emes CBT, Anda cukup melakukan <strong>Deploy ulang</strong> (Deployment baru) dari editor Apps Script. Data tidak akan terhapus.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 3. LOGIN -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="login">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Login & Akses
+    </h2>
+    <p>Halaman login Emes CBT menampilkan dua tab: <strong>Login Siswa</strong> dan <strong>Login Admin</strong>. Keduanya menggunakan URL yang sama.</p>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Login Admin / Guru / Pengawas
+    </h3>
+    <p>Gunakan tab <strong>"Login Admin"</strong>. Masukkan username dan password yang telah didaftarkan, lalu selesaikan CAPTCHA visual yang muncul. Sistem akan mengarahkan ke dashboard sesuai peran.</p>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Login Siswa
+    </h3>
+    <p>Siswa menggunakan tab <strong>"Login Siswa"</strong> dengan username dan password yang telah diberikan admin. Setelah login, siswa langsung diarahkan ke dashboard ujian mereka.</p>
+
+    <div class="callout callout-warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div><strong>Blokir Login Ganda:</strong> Jika fitur ini aktif (default), satu akun siswa hanya bisa login dari satu perangkat pada satu waktu. Login dari perangkat lain akan memblokir sesi sebelumnya.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 4. PERAN & HAK AKSES -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="role">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Peran & Hak Akses
+    </h2>
+    <p>Emes CBT menggunakan sistem RBAC (Role-Based Access Control) dengan tiga peran untuk staf, ditambah satu peran khusus untuk siswa.</p>
+
+    <div class="role-grid">
+      <div class="role-card admin">
+        <div class="role-label">Administrator</div>
+        <div class="role-name">Admin</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Semua fitur tanpa terkecuali</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Kelola admin & peran</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Pengaturan sistem</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Backup & reset database</div>
+      </div>
+      <div class="role-card guru">
+        <div class="role-label">Guru</div>
+        <div class="role-name">Guru</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Kelola soal & paket</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Lihat & export nilai</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Analisa butir soal</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Koreksi uraian</div>
+      </div>
+      <div class="role-card proktor">
+        <div class="role-label">Pengawas</div>
+        <div class="role-name">Proktor</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Monitoring ujian live</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Kelola token ujian</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Reset sesi ujian siswa</div>
+        <div class="role-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Lihat nilai (read-only)</div>
+      </div>
+    </div>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+      Menambah Admin / Guru / Pengawas
+    </h3>
+    <p>Masuk ke menu <strong>Sistem → Manajemen Admin</strong>. Klik <strong>Tambah Admin</strong>, isi data, dan pilih peran yang sesuai. Akun langsung aktif.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 5. DATA SISWA -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="siswa">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Data Siswa
+    </h2>
+    <p>Menu <strong>Manajemen → Data Siswa</strong> digunakan untuk mendaftarkan peserta ujian. Siswa dapat ditambahkan satu per satu atau massal melalui import CSV.</p>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Import Massal via CSV
+    </h3>
+    <p>Klik <strong>Import CSV</strong> di halaman Data Siswa. Format file CSV yang diterima:</p>
+    <div class="code-label">Format CSV (tanpa baris header)</div>
+    <div class="code-block"><span class="comment"># username, password, nama_lengkap, kelas, email</span>
+<span class="string">andi2025</span>, pass123, Andi Prasetyo, X-IPA-1, andi@email.com
+<span class="string">budi2025</span>, pass456, Budi Santoso, X-IPA-1, budi@email.com
+<span class="string">siti2025</span>, pass789, Siti Rahmawati, X-IPS-2,</div>
+    <div class="callout callout-info">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>Kolom email bersifat opsional. Username harus unik. Jika username sudah ada, baris tersebut akan dilewati. Password disimpan secara langsung (tidak terenkripsi), pastikan password cukup kuat.</div>
+    </div>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>
+      Manajemen Akun Siswa
+    </h3>
+    <table class="doc-table">
+      <tr><th>Aksi</th><th>Cara</th></tr>
+      <tr><td><strong>Tambah satu siswa</strong></td><td>Klik tombol + Tambah Siswa, isi form, simpan</td></tr>
+      <tr><td><strong>Edit data siswa</strong></td><td>Klik ikon pensil di baris siswa</td></tr>
+      <tr><td><strong>Hapus siswa</strong></td><td>Klik ikon tong sampah, konfirmasi</td></tr>
+      <tr><td><strong>Reset sesi ujian</strong></td><td>Dari menu Monitoring, klik Reset pada baris siswa</td></tr>
+    </table>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 6. BANK SOAL -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="soal">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Bank Soal
+    </h2>
+    <p>Menu <strong>Manajemen → Bank Soal</strong>. Soal dikelompokkan per paket ujian. Satu soal hanya bisa masuk ke satu paket.</p>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>
+      Tipe Soal yang Didukung
+    </h3>
+    <table class="doc-table">
+      <tr><th>Tipe</th><th>Keterangan</th><th>Kunci Jawaban</th></tr>
+      <tr><td><span class="badge-green">Pilihan Ganda</span></td><td>PG biasa dengan 4–5 opsi (A–E)</td><td>Pilih satu opsi (A/B/C/D/E)</td></tr>
+      <tr><td><span class="badge-blue">PG Kompleks</span></td><td>Pilihan ganda dengan jawaban lebih dari satu benar</td><td>Pilih beberapa opsi</td></tr>
+      <tr><td><span class="badge-amber">Benar/Salah</span></td><td>Pernyataan yang dinilai benar atau salah</td><td>Pilih Benar atau Salah</td></tr>
+      <tr><td><span class="badge-gray">Menjodohkan</span></td><td>Pasangkan kolom kiri dengan kolom kanan</td><td>Pasangan A–B yang benar</td></tr>
+      <tr><td><span class="badge-gray">Uraian</span></td><td>Jawaban teks bebas, dikoreksi manual oleh guru</td><td>Dikoreksi via menu Koreksi Uraian</td></tr>
+    </table>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Import Soal via CSV
+    </h3>
+    <p>Klik <strong>Import CSV</strong> di halaman Bank Soal. Format kolom (tanpa baris header):</p>
+    <div class="code-label">Format CSV Soal</div>
+    <div class="code-block"><span class="comment"># tipe_soal, pertanyaan, opsi_a, opsi_b, opsi_c, opsi_d, opsi_e, kunci, bobot</span>
+Pilihan Ganda,"Ibu kota Indonesia adalah?",Jakarta,Bandung,Surabaya,Medan,,a,1
+Pilihan Ganda,"2 + 2 = ?","3","4","5","6",,b,1
+Uraian,"Jelaskan pengertian demokrasi!",,,,,,,2</div>
+
+    <div class="callout callout-warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div>Soal dengan gambar harus ditambahkan satu per satu melalui form, bukan via CSV. Isi kolom <strong>URL Gambar</strong> dengan URL gambar yang sudah diunggah ke Google Drive atau hosting lain.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 7. PAKET UJIAN -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="paket">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+      Paket Ujian
+    </h2>
+    <p>Paket ujian adalah wadah yang mengelompokkan soal-soal untuk satu sesi ujian tertentu. Menu <strong>Manajemen → Paket Ujian</strong>.</p>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
+      Konfigurasi Paket
+    </h3>
+    <table class="doc-table">
+      <tr><th>Field</th><th>Keterangan</th></tr>
+      <tr><td><strong>Nama Paket</strong></td><td>Nama yang terlihat siswa saat login</td></tr>
+      <tr><td><strong>Mata Pelajaran</strong></td><td>Untuk pengelompokan dan dokumen cetak</td></tr>
+      <tr><td><strong>Kelas Target</strong></td><td>Kelas yang bisa mengakses paket ini</td></tr>
+      <tr><td><strong>Durasi</strong></td><td>Waktu ujian dalam menit. Countdown dimulai saat siswa klik Mulai.</td></tr>
+      <tr><td><strong>Jumlah Soal</strong></td><td>Berapa soal yang ditampilkan ke siswa (bisa lebih sedikit dari total soal di bank)</td></tr>
+      <tr><td><strong>KKM</strong></td><td>Nilai ambang batas kelulusan (0–100)</td></tr>
+      <tr><td><strong>Tanggal Mulai & Selesai</strong></td><td>Rentang waktu ujian aktif. Di luar rentang ini, paket tidak bisa diakses siswa.</td></tr>
+      <tr><td><strong>Acak Soal</strong></td><td>Urutan soal diacak berbeda untuk setiap siswa</td></tr>
+      <tr><td><strong>Acak Opsi</strong></td><td>Urutan pilihan jawaban diacak</td></tr>
+      <tr><td><strong>Status</strong></td><td><code>aktif</code> = bisa diakses siswa, <code>nonaktif</code> = tersembunyi dari siswa</td></tr>
+      <tr><td><strong>Token Ujian</strong></td><td>Kode yang harus dimasukkan siswa sebelum mulai ujian (opsional)</td></tr>
+      <tr><td><strong>Izinkan Lanjut</strong></td><td>Siswa bisa lanjut ujian jika browser tertutup (override pengaturan global)</td></tr>
+      <tr><td><strong>Tampilkan Nilai</strong></td><td>Apakah nilai ditampilkan ke siswa setelah submit</td></tr>
+      <tr><td><strong>Jumlah Opsi</strong></td><td>4 atau 5 pilihan per soal pilihan ganda</td></tr>
+    </table>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 8. TOKEN UJIAN -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="token">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+      Token Ujian
+    </h2>
+    <p>Token ujian adalah kode verifikasi yang harus dimasukkan siswa sebelum dapat memulai ujian. Fitur ini mencegah siswa mengakses ujian di luar waktu yang ditentukan pengawas.</p>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      Cara Menggunakan Token
+    </h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Set Token di Paket Ujian</div>
+          <div class="step-desc">Di form Paket Ujian, isi kolom <strong>Token Ujian</strong> dengan kode yang Anda inginkan (contoh: <code>UJIAN-2025</code>). Atau klik ikon kunci di daftar paket untuk kelola token.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Bagikan Token ke Siswa saat Ujian</div>
+          <div class="step-desc">Saat sesi ujian dimulai, pengawas (Proktor) mengumumkan token secara lisan di ruang ujian atau menuliskannya di papan tulis.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Siswa Memasukkan Token</div>
+          <div class="step-desc">Di dashboard siswa, paket yang memiliki token akan menampilkan kolom input token. Siswa tidak bisa memulai ujian tanpa memasukkan token yang benar.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>Token tidak berlaku setelah siswa memulai ujian — siswa yang sudah mulai tidak perlu memasukkan token lagi jika melanjutkan sesi. Hapus atau kosongkan token untuk menonaktifkan fitur ini.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 9. PANDUAN SISWA -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="siswa-ujian">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Panduan untuk Siswa
+    </h2>
+    <p>Ini adalah panduan yang bisa dibagikan ke siswa sebelum ujian dilaksanakan.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Buka URL Ujian di Browser</div>
+          <div class="step-desc">Buka URL aplikasi Emes CBT di browser (Chrome, Firefox, atau Edge terbaru). Gunakan tab <strong>Login Siswa</strong>. Masukkan <strong>username</strong> dan <strong>password</strong> yang diberikan guru/admin.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Pilih Paket Ujian</div>
+          <div class="step-desc">Setelah login, daftar paket ujian yang tersedia akan muncul. Pilih paket yang sesuai dengan instruksi pengawas. Jika ada token, masukkan kode yang diberikan.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Kerjakan Soal dengan Teliti</div>
+          <div class="step-desc">Pilih jawaban untuk setiap soal. Jawaban tersimpan <strong>otomatis</strong> setiap beberapa detik — tidak perlu menekan tombol simpan manual. Gunakan tombol navigasi untuk berpindah antar soal. Soal yang belum dijawab akan ditandai berbeda di panel navigasi.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Submit Ujian</div>
+          <div class="step-desc">Setelah semua soal selesai (atau waktu habis), klik tombol <strong>Selesai & Submit</strong>. Ujian akan otomatis tersubmit saat waktu habis. Setelah submit, jawaban tidak bisa diubah.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Lihat Hasil (Jika Diizinkan)</div>
+          <div class="step-desc">Jika admin mengaktifkan tampilan nilai, hasil ujian akan langsung muncul setelah submit. Jika tidak, siswa melihat pesan konfirmasi bahwa ujian telah berhasil disubmit.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div><strong>Jangan tutup browser atau refresh halaman</strong> saat ujian berlangsung kecuali terpaksa. Jika terjadi, login kembali dan ujian bisa dilanjutkan (jika fitur lanjut ujian aktif). Pastikan koneksi internet stabil sepanjang ujian.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 10. MONITORING -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="monitoring">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      Monitoring Ujian
+    </h2>
+    <p>Menu <strong>Utama → Monitoring Ujian</strong>. Halaman ini menampilkan status ujian semua siswa secara real-time dan diperbarui otomatis.</p>
+
+    <table class="doc-table">
+      <tr><th>Informasi yang Ditampilkan</th><th>Keterangan</th></tr>
+      <tr><td><strong>Nama Siswa</strong></td><td>Nama dan kelas peserta ujian</td></tr>
+      <tr><td><strong>Progres</strong></td><td>Jumlah soal dijawab / total soal</td></tr>
+      <tr><td><strong>Waktu Sisa</strong></td><td>Countdown waktu ujian yang tersisa</td></tr>
+      <tr><td><strong>Status</strong></td><td>Aktif / Selesai / Belum mulai</td></tr>
+      <tr><td><strong>Aksi Reset</strong></td><td>Admin/Proktor bisa mereset sesi siswa jika ada masalah teknis</td></tr>
+    </table>
+
+    <div class="callout callout-info">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div><strong>Reset sesi</strong> hanya menghapus status ujian siswa tersebut, bukan menghapus jawaban. Gunakan dengan hati-hati — siswa yang direset harus memulai ujian dari awal jika fitur lanjut ujian tidak aktif.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 11. REKAP NILAI -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="nilai">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Rekap Nilai
+    </h2>
+    <p>Menu <strong>Hasil & Analisa → Rekap Nilai</strong>. Nilai terhitung otomatis saat siswa submit ujian. Halaman ini menampilkan rekap per paket.</p>
+
+    <table class="doc-table">
+      <tr><th>Kolom Nilai</th><th>Keterangan</th></tr>
+      <tr><td><strong>Nilai Akhir</strong></td><td>Nilai 0–100 berdasarkan rumus: (skor/bobot_total) × 100</td></tr>
+      <tr><td><strong>Benar / Salah / Kosong</strong></td><td>Jumlah jawaban benar, salah, dan yang tidak dijawab</td></tr>
+      <tr><td><strong>Status KKM</strong></td><td>Lulus/Tidak Lulus berdasarkan KKM yang ditetapkan di paket</td></tr>
+    </table>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export & Cetak Nilai
+    </h3>
+    <p>Gunakan tombol <strong>Export CSV</strong> untuk mengunduh data nilai dalam format spreadsheet. Tombol <strong>Cetak Rekap</strong> (memerlukan lisensi NPSN) menghasilkan dokumen cetak formal dengan kop sekolah.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 12. ANALISA BUTIR -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="analisa">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18h8"/><path d="M3 21h18"/><path d="M14 21v-4"/><circle cx="17" cy="7" r="3"/></svg>
+      Analisa Butir Soal
+    </h2>
+    <p>Menu <strong>Hasil & Analisa → Analisa Butir</strong>. Fitur ini menganalisis kualitas setiap butir soal berdasarkan jawaban siswa yang sudah terkumpul.</p>
+
+    <table class="doc-table">
+      <tr><th>Indikator</th><th>Keterangan</th><th>Interpretasi</th></tr>
+      <tr><td><strong>Tingkat Kesulitan</strong></td><td>Proporsi siswa yang menjawab benar</td><td>&gt;0.7 = Mudah, 0.3–0.7 = Sedang, &lt;0.3 = Sulit</td></tr>
+      <tr><td><strong>Daya Beda</strong></td><td>Kemampuan soal membedakan siswa pintar dan lemah</td><td>&gt;0.4 = Baik, 0.2–0.4 = Cukup, &lt;0.2 = Perlu revisi</td></tr>
+      <tr><td><strong>Efektivitas Pengecoh</strong></td><td>Seberapa sering tiap opsi salah dipilih siswa</td><td>Pengecoh yang tidak pernah dipilih perlu diganti</td></tr>
+    </table>
+
+    <p>Klik baris soal untuk melihat detail distribusi jawaban per opsi. Hasil analisa dapat diekspor ke CSV (memerlukan lisensi) atau dicetak (memerlukan lisensi).</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 13. KOREKSI URAIAN -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="koreksi">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Koreksi Uraian
+    </h2>
+    <p>Menu <strong>Hasil & Analisa → Koreksi Uraian</strong>. Khusus untuk paket yang memiliki soal tipe <strong>Uraian</strong>, guru harus mengoreksi jawaban secara manual di sini.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Pilih Paket yang Mengandung Soal Uraian</div>
+          <div class="step-desc">Dari dropdown di bagian atas, pilih paket yang ingin dikoreksi. Hanya paket dengan soal uraian yang akan muncul dalam daftar.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Klik Nama Siswa untuk Buka Detail</div>
+          <div class="step-desc">Daftar siswa yang sudah mengerjakan akan muncul. Klik nama siswa untuk membuka panel koreksi. Jawaban siswa ditampilkan di samping kolom input skor.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Beri Skor dan Simpan</div>
+          <div class="step-desc">Masukkan skor untuk setiap soal uraian (0 hingga bobot soal tersebut). Klik <strong>Simpan Skor Uraian</strong>. Nilai akhir siswa akan diperbarui otomatis setelah semua soal uraian dikoreksi.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 14. CETAK DOKUMEN -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="cetak">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Cetak Dokumen <span class="badge-amber" style="font-size:12px;margin-left:8px">Memerlukan Lisensi</span>
+    </h2>
+    <p>Menu <strong>Dokumen & Utilitas → Cetak Dokumen</strong>. Tersedia setelah NPSN sekolah terdaftar. Menghasilkan dokumen PDF/cetak dengan kop sekolah resmi.</p>
+
+    <table class="doc-table">
+      <tr><th>Dokumen</th><th>Isi</th><th>Kegunaan</th></tr>
+      <tr><td><strong>Daftar Hadir</strong></td><td>Nama siswa, tanda tangan, kelas, paket ujian</td><td>Kehadiran peserta di ruang ujian</td></tr>
+      <tr><td><strong>Berita Acara</strong></td><td>Detail pelaksanaan ujian, pengawas, waktu, catatan</td><td>Dokumen administrasi resmi ujian</td></tr>
+      <tr><td><strong>Rekap Nilai</strong></td><td>Daftar nilai seluruh siswa, rata-rata, statistik</td><td>Laporan hasil ujian ke kepala sekolah</td></tr>
+    </table>
+
+    <div class="callout callout-info">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>Dokumen yang dihasilkan tanpa lisensi akan mencantumkan watermark <strong>[TIDAK BERLISENSI]</strong> di header. Daftarkan NPSN untuk menghasilkan dokumen bersih.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 15. PENGATURAN -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="pengaturan">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Pengaturan Sistem
+    </h2>
+    <p>Menu <strong>Sistem → Pengaturan</strong>. Khusus Administrator. Konfigurasi identitas sekolah dan perilaku ujian secara global.</p>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Identitas Sekolah
+    </h3>
+    <div class="setting-row">
+      <div class="setting-key">nama_sekolah</div>
+      <div class="setting-info"><div class="setting-label">Nama Sekolah / Instansi</div><div class="setting-desc">Muncul di halaman login siswa dan semua dokumen cetak.</div></div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-key">npsn</div>
+      <div class="setting-info"><div class="setting-label">NPSN</div><div class="setting-desc">Nomor Pokok Sekolah Nasional. Digunakan untuk validasi lisensi fitur cetak dokumen.</div></div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-key">nama_kepsek</div>
+      <div class="setting-info"><div class="setting-label">Nama Kepala Sekolah</div><div class="setting-desc">Nama yang tertera di dokumen cetak resmi.</div></div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-key">tahun_pelajaran</div>
+      <div class="setting-info"><div class="setting-label">Tahun Pelajaran</div><div class="setting-desc">Contoh: <code>2024/2025</code>. Muncul di dokumen cetak.</div></div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-key">logo_sekolah</div>
+      <div class="setting-info"><div class="setting-label">Logo Sekolah (URL)</div><div class="setting-desc">URL gambar logo sekolah. Gunakan Google Drive (atur akses publik) atau hosting gambar lain. Muncul di halaman login dan dokumen cetak.</div></div>
+    </div>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Pengaturan Ujian Global
+    </h3>
+    <div class="setting-row">
+      <div class="setting-key">allow_review</div>
+      <div class="setting-info"><div class="setting-label">Izinkan Review Soal</div><div class="setting-desc">Jika aktif, setelah submit siswa bisa melihat kembali soal dan jawaban yang dipilih.</div><div class="setting-default">Default: <code>true</code></div></div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-key">show_jawaban</div>
+      <div class="setting-info"><div class="setting-label">Tampilkan Kunci Jawaban</div><div class="setting-desc">Jika aktif, kunci jawaban yang benar ditampilkan saat review soal.</div><div class="setting-default">Default: <code>false</code></div></div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-key">sembunyikan_nilai</div>
+      <div class="setting-info"><div class="setting-label">Sembunyikan Nilai dari Siswa</div><div class="setting-desc">Jika aktif, nilai tidak ditampilkan ke siswa setelah submit. Nilai tetap tersimpan di sistem untuk admin.</div><div class="setting-default">Default: <code>false</code></div></div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-key">izinkan_lanjut_ujian</div>
+      <div class="setting-info"><div class="setting-label">Izinkan Lanjut Ujian</div><div class="setting-desc">Jika aktif, siswa bisa login kembali dan melanjutkan ujian dari soal terakhir setelah browser ditutup. Bisa di-override per paket.</div><div class="setting-default">Default: <code>true</code></div></div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-key">login_ganda</div>
+      <div class="setting-info"><div class="setting-label">Login Ganda Siswa</div><div class="setting-desc"><code>blokir</code> — satu akun hanya bisa aktif di satu perangkat. <code>izinkan</code> — akun bisa login dari mana saja.</div><div class="setting-default">Default: <code>blokir</code></div></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 16. FAQ CHATBOT -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="faq">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 11V5"/><circle cx="12" cy="3" r="2"/></svg>
+      FAQ Chatbot Siswa
+    </h2>
+    <p>Menu <strong>Dokumen & Utilitas → FAQ Chatbot</strong>. Siswa bisa bertanya seputar ujian melalui ikon chat di pojok bawah halaman ujian. Admin mengelola basis pengetahuan (FAQ) yang menjadi sumber jawaban chatbot.</p>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Menambah FAQ
+    </h3>
+    <p>Klik <strong>Tambah FAQ</strong>, isi <strong>Pertanyaan</strong> dan <strong>Jawaban</strong>, lalu simpan. Pertanyaan yang mirip dengan yang ditanyakan siswa akan dicocokkan secara otomatis (pencarian teks).</p>
+
+    <p>Beberapa FAQ default sudah disertakan saat setup, antara lain cara memulai ujian, auto-save, waktu habis, dan browser tertutup. Anda bisa mengedit atau menghapus FAQ default ini.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 17. BACKUP & RESET -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="backup">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Backup & Reset Database
+    </h2>
+    <p>Menu <strong>Sistem → Pengaturan</strong>, panel kanan <strong>Operasi Data</strong>. Tersedia untuk Administrator saja.</p>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+      Backup Data
+    </h3>
+    <p>Klik <strong>Backup Sekarang</strong>. Sistem akan menyalin seluruh spreadsheet (termasuk semua sheet) ke folder Google Drive Anda dengan nama dan timestamp. Proses ini beberapa detik hingga satu menit tergantung ukuran data.</p>
+    <div class="callout callout-success">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      <div><strong>Disarankan</strong> membuat backup sebelum mengadakan ujian besar dan secara berkala setiap minggu. Link file backup langsung diberikan setelah proses selesai.</div>
+    </div>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      Reset Database Ujian
+    </h3>
+    <p>Menghapus <strong>seluruh data jawaban, nilai, dan log</strong> siswa. Data siswa, soal, dan paket tetap tersimpan.</p>
+    <div class="callout callout-danger">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div><strong>PERINGATAN: Tindakan ini tidak dapat dibatalkan!</strong> Selalu buat backup sebelum melakukan reset. Untuk konfirmasi, sistem meminta Anda mengetik <code>RESET_SEMUA_DATA</code> sebelum proses berjalan.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 18. LISENSI -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="lisensi">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Lisensi NPSN
+    </h2>
+    <p>Beberapa fitur premium Emes CBT (cetak dokumen resmi, export analisa) memerlukan NPSN yang terdaftar. Pendaftaran NPSN dilakukan melalui pengembang.</p>
+
+    <h3 class="sub-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      Cara Mendaftarkan NPSN
+    </h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Isi Identitas Sekolah di Pengaturan</div>
+          <div class="step-desc">Masuk ke <strong>Sistem → Pengaturan</strong>. Isi semua kolom identitas sekolah: Nama Sekolah, NPSN, Nama Kepsek, Kabupaten/Kota, Alamat. Klik <strong>Simpan Pengaturan</strong>.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Klik "Daftarkan Sekolah" jika NPSN Belum Terdaftar</div>
+          <div class="step-desc">Jika setelah cek lisensi muncul status "Tidak Valid", tombol <strong>Daftarkan Sekolah</strong> akan tampil di samping tombol Simpan. Klik tombol tersebut untuk membuka WhatsApp pengembang dengan data sekolah terisi otomatis.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Konfirmasi via WhatsApp</div>
+          <div class="step-desc">Kirim pesan ke pengembang. Setelah NPSN diverifikasi dan didaftarkan, kembali ke Pengaturan dan klik <strong>Cek Lisensi</strong> untuk memverifikasi status berlisensi.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 19. STRUKTUR SHEET -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <section class="doc-section" id="sheet">
+    <h2 class="sec-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Struktur Sheet Google Sheets
+    </h2>
+    <p>Emes CBT menggunakan 9 sheet di dalam satu spreadsheet. <strong>Jangan mengubah nama sheet atau menghapus kolom</strong> — sistem bergantung pada nama dan urutan kolom yang tepat.</p>
+
+    <div class="sheet-card">
+      <div class="sheet-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> admin</div>
+      <div class="sheet-cols"><span class="sheet-col key">username</span><span class="sheet-col">password</span><span class="sheet-col">nama</span><span class="sheet-col">email</span><span class="sheet-col">role</span><span class="sheet-col">created_at</span><span class="sheet-col">updated_at</span></div>
+    </div>
+
+    <div class="sheet-card">
+      <div class="sheet-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> siswa</div>
+      <div class="sheet-cols"><span class="sheet-col key">id_siswa</span><span class="sheet-col">username</span><span class="sheet-col">password</span><span class="sheet-col">nama</span><span class="sheet-col">kelas</span><span class="sheet-col">email</span><span class="sheet-col">status</span><span class="sheet-col">token_aktif</span><span class="sheet-col">created_at</span><span class="sheet-col">updated_at</span></div>
+    </div>
+
+    <div class="sheet-card">
+      <div class="sheet-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg> soal</div>
+      <div class="sheet-cols"><span class="sheet-col key">kode_soal</span><span class="sheet-col">kode_paket</span><span class="sheet-col">tipe_soal</span><span class="sheet-col">pertanyaan</span><span class="sheet-col">opsi_a…e</span><span class="sheet-col">kunci_jawaban</span><span class="sheet-col">bobot</span><span class="sheet-col">gambar_url</span><span class="sheet-col">created_at</span></div>
+    </div>
+
+    <div class="sheet-card">
+      <div class="sheet-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/></svg> paket_soal</div>
+      <div class="sheet-cols"><span class="sheet-col key">kode_paket</span><span class="sheet-col">nama_paket</span><span class="sheet-col">mata_pelajaran</span><span class="sheet-col">kelas_target</span><span class="sheet-col">durasi</span><span class="sheet-col">jumlah_soal</span><span class="sheet-col">kkm</span><span class="sheet-col">tanggal_mulai</span><span class="sheet-col">tanggal_selesai</span><span class="sheet-col">acak_soal</span><span class="sheet-col">token_ujian</span><span class="sheet-col">status</span></div>
+    </div>
+
+    <div class="sheet-card">
+      <div class="sheet-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/></svg> jawaban_siswa</div>
+      <div class="sheet-cols"><span class="sheet-col key">id_sesi</span><span class="sheet-col">id_siswa</span><span class="sheet-col">kode_paket</span><span class="sheet-col">jawaban_json</span><span class="sheet-col">skor_json</span><span class="sheet-col">progres</span><span class="sheet-col">waktu_sisa</span><span class="sheet-col">status</span><span class="sheet-col">mulai_at</span><span class="sheet-col">selesai_at</span></div>
+    </div>
+
+    <div class="sheet-card">
+      <div class="sheet-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="18" y1="20" x2="18" y2="10"/></svg> nilai</div>
+      <div class="sheet-cols"><span class="sheet-col key">id_nilai</span><span class="sheet-col">id_siswa</span><span class="sheet-col">kode_paket</span><span class="sheet-col">nama_siswa</span><span class="sheet-col">kelas</span><span class="sheet-col">nilai_akhir</span><span class="sheet-col">benar</span><span class="sheet-col">salah</span><span class="sheet-col">kosong</span><span class="sheet-col">status</span><span class="sheet-col">kkm</span></div>
+    </div>
+
+    <div class="sheet-card">
+      <div class="sheet-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg> pengaturan</div>
+      <div class="sheet-cols"><span class="sheet-col key">key</span><span class="sheet-col">value</span><span class="sheet-col">deskripsi</span></div>
+    </div>
+
+    <div class="sheet-card">
+      <div class="sheet-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor"/><circle cx="3" cy="12" r="1" fill="currentColor"/><circle cx="3" cy="18" r="1" fill="currentColor"/></svg> log_activity</div>
+      <div class="sheet-cols"><span class="sheet-col key">timestamp</span><span class="sheet-col">type</span><span class="sheet-col">user</span><span class="sheet-col">detail</span></div>
+    </div>
+
+    <div class="sheet-card">
+      <div class="sheet-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 11V5"/><circle cx="12" cy="3" r="2"/></svg> faq</div>
+      <div class="sheet-cols"><span class="sheet-col key">id_faq</span><span class="sheet-col">pertanyaan</span><span class="sheet-col">jawaban</span><span class="sheet-col">created_at</span></div>
+    </div>
+
+    <div class="callout callout-warn" style="margin-top:20px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div><strong>Jangan pernah mengedit sheet secara langsung</strong> kecuali untuk keperluan darurat atau pemulihan data. Semua operasi data sebaiknya dilakukan melalui antarmuka web Emes CBT. Perubahan langsung di sheet bisa merusak integritas data dan cache sistem.</div>
+    </div>
+  </section>
+
+  <!-- Footer doc -->
+  <div style="border-top:1px solid var(--border);padding-top:28px;margin-top:40px;text-align:center">
+    <p style="font-size:13px;color:var(--faint)">Panduan Pengguna Emes CBT v7.0 · © Emes EduTech · Untuk bantuan teknis hubungi <a href="https://wa.me/6285784652700" style="color:var(--gd);text-decoration:none;font-weight:600">WhatsApp Developer</a></p>
+  </div>
+
+</main>
+</div><!-- /layout -->
+
+<script>
+// Sidebar active state
+function setActive(el) {
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Mobile sidebar toggle
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// Close sidebar on link click (mobile)
+document.querySelectorAll('.sidebar-link').forEach(link => {
+  link.addEventListener('click', () => {
+    if (window.innerWidth <= 768) {
+      document.getElementById('sidebar').classList.remove('open');
+    }
+  });
+});
+
+// Scroll spy — highlight sidebar based on scroll
+const sections = document.querySelectorAll('.doc-section');
+const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      sidebarLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-60px 0px -60% 0px', threshold: 0 });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
