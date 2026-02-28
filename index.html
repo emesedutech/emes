@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emes CBT — Computer-Based Test System</title>
+<link rel="icon" type="image/png" href="https://i.imgur.com/dYwR4Jp.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+/* ========== RESET & VARS ========== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --g:#10b981;--gd:#047857;--gdd:#065f46;
+  --gl:#d1fae5;--gs:#ecfdf5;
+  --ink:#0d1a14;--ink2:#1a2e22;--ink3:#2d4a38;
+  --muted:#5a7a68;--faint:#a0bfac;
+  --white:#ffffff;
+  --card:#f4fdf8;
+  --border:#ddf0e6;
+  --r:10px;
+}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--white);
+  color:var(--ink);
+  overflow-x:hidden;
+}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#f0fdf4}
+::-webkit-scrollbar-thumb{background:var(--g);border-radius:3px}
+
+/* ========== NOISE OVERLAY ========== */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.4;
+}
+
+/* ========== NAV ========== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:0 5%;
+  height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,0.88);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(16,185,129,0.12);
+  transition:box-shadow .3s;
+}
+nav.scrolled{box-shadow:0 4px 24px rgba(4,120,87,.08)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-brand img{width:34px;height:34px;object-fit:contain}
+.nav-brand-text{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:18px;color:var(--gdd);letter-spacing:-0.5px}
+.nav-brand-sub{font-size:10px;font-weight:400;color:var(--muted);letter-spacing:1px;text-transform:uppercase;display:block;margin-top:-2px}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:14px;font-weight:500;color:var(--ink3);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--g)}
+.nav-cta{
+  background:var(--gdd);color:#fff;
+  padding:9px 22px;border-radius:var(--r);
+  font-size:13.5px;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;
+  text-decoration:none;
+  transition:background .2s,transform .15s,box-shadow .2s;
+  box-shadow:0 2px 12px rgba(4,120,87,.25);
+}
+.nav-cta:hover{background:var(--g);transform:translateY(-1px);box-shadow:0 6px 20px rgba(4,120,87,.3)}
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;color:var(--ink);font-size:20px}
+
+/* ========== HERO ========== */
+.hero{
+  min-height:100vh;
+  padding:120px 5% 80px;
+  display:flex;align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 10%, rgba(16,185,129,.08) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 10% 90%, rgba(4,120,87,.06) 0%, transparent 70%),
+    linear-gradient(180deg,#f0fdf4 0%,#ffffff 60%);
+}
+.hero-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(16,185,129,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(16,185,129,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.hero-inner{
+  position:relative;z-index:1;
+  max-width:1200px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--gl);border:1px solid rgba(16,185,129,.3);
+  color:var(--gdd);padding:6px 14px;border-radius:100px;
+  font-size:12px;font-weight:600;letter-spacing:0.3px;
+  margin-bottom:20px;
+  animation:fadeUp .6s ease both;
+}
+.hero-badge i{font-size:11px;color:var(--g)}
+.hero-headline{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(36px,4.5vw,62px);
+  font-weight:800;
+  line-height:1.08;
+  letter-spacing:-1.5px;
+  color:var(--ink);
+  margin-bottom:22px;
+  animation:fadeUp .6s .1s ease both;
+}
+.hero-headline .hl{color:var(--g);position:relative;display:inline-block}
+.hero-headline .hl::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--g),transparent);
+  border-radius:2px;
+}
+.hero-sub{
+  font-size:17px;font-weight:300;line-height:1.7;
+  color:var(--muted);max-width:480px;
+  margin-bottom:36px;
+  animation:fadeUp .6s .2s ease both;
+}
+.hero-actions{
+  display:flex;gap:14px;flex-wrap:wrap;
+  animation:fadeUp .6s .3s ease both;
+}
+.btn-hero-primary{
+  display:inline-flex;align-items:center;gap:9px;
+  background:var(--gdd);color:#fff;
+  padding:14px 28px;border-radius:var(--r);
+  font-size:15px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;
+  text-decoration:none;letter-spacing:-0.3px;
+  box-shadow:0 4px 20px rgba(4,120,87,.3);
+  transition:all .2s;
+}
+.btn-hero-primary:hover{background:var(--g);transform:translateY(-2px);box-shadow:0 8px 28px rgba(4,120,87,.35)}
+.btn-hero-secondary{
+  display:inline-flex;align-items:center;gap:9px;
+  background:transparent;color:var(--gdd);
+  padding:13px 24px;border-radius:var(--r);
+  font-size:15px;font-weight:600;
+  text-decoration:none;
+  border:1.5px solid var(--border);
+  transition:all .2s;
+}
+.btn-hero-secondary:hover{background:var(--gs);border-color:var(--g)}
+.hero-stats{
+  display:flex;gap:32px;margin-top:44px;
+  animation:fadeUp .6s .4s ease both;
+}
+.hero-stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;color:var(--gdd);letter-spacing:-1px}
+.hero-stat-label{font-size:12px;color:var(--muted);font-weight:400;margin-top:2px}
+
+/* HERO VISUAL */
+.hero-visual{
+  position:relative;
+  animation:fadeUp .7s .15s ease both;
+}
+.dashboard-mockup{
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 24px 60px rgba(4,120,87,.15),0 4px 12px rgba(0,0,0,.06);
+  overflow:hidden;
+  border:1px solid var(--border);
+  position:relative;
+}
+.mock-topbar{
+  background:linear-gradient(135deg,var(--gdd),var(--g));
+  padding:12px 16px;
+  display:flex;align-items:center;gap:10px;
+}
+.mock-dots{display:flex;gap:6px}
+.mock-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4)}
+.mock-dot:first-child{background:rgba(255,255,255,.9)}
+.mock-title-bar{color:rgba(255,255,255,.9);font-size:12px;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:0.5px}
+.mock-body{padding:20px;background:#f8fffe}
+.mock-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.mock-card{background:#fff;border-radius:8px;padding:14px;border:1px solid var(--border)}
+.mock-card-label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.mock-card-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--gdd)}
+.mock-card-icon{float:right;width:28px;height:28px;background:var(--gs);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.mock-card-icon i{font-size:12px;color:var(--g)}
+.mock-list-label{font-size:11px;font-weight:600;color:var(--ink3);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.4px}
+.mock-list-item{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#fff;border-radius:6px;padding:8px 12px;
+  border:1px solid var(--border);margin-bottom:6px;
+  font-size:11px;
+}
+.mock-list-item .name{color:var(--ink3);font-weight:500}
+.mock-badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
+.mb-green{background:var(--gl);color:var(--gdd)}
+.mb-yellow{background:#fef3c7;color:#92400e}
+.mb-gray{background:#f3f4f6;color:#4b5563}
+.mock-progress-bar{
+  background:var(--gl);border-radius:20px;height:4px;overflow:hidden;margin-top:4px;
+}
+.mock-progress-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--gdd));border-radius:20px}
+.floating-pill{
+  position:absolute;
+  background:#fff;border-radius:40px;
+  box-shadow:0 8px 24px rgba(4,120,87,.18);
+  padding:8px 14px;
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:600;color:var(--gdd);
+  border:1px solid var(--gl);
+}
+.fp1{top:-18px;right:-20px;animation:float1 3s ease-in-out infinite}
+.fp2{bottom:20px;left:-28px;animation:float2 3.5s ease-in-out infinite}
+.fp-icon{width:26px;height:26px;background:var(--gl);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.fp-icon i{font-size:11px;color:var(--gdd)}
+
+@keyframes float1{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ========== SECTION COMMONS ========== */
+section{position:relative;z-index:1}
+.section-inner{max-width:1200px;margin:0 auto;padding:0 5%}
+.section-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--gl);color:var(--gdd);
+  padding:5px 14px;border-radius:100px;
+  font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.section-tag i{font-size:10px}
+.section-title{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(28px,3.5vw,44px);
+  font-weight:800;letter-spacing:-1px;
+  color:var(--ink);line-height:1.1;margin-bottom:14px;
+}
+.section-sub{font-size:17px;font-weight:300;color:var(--muted);line-height:1.7;max-width:520px}
+
+/* ========== TRUST BAR ========== */
+.trust-bar{
+  padding:32px 5%;
+  background:var(--gs);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.trust-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;
+}
+.trust-item{
+  display:flex;align-items:center;gap:10px;
+  font-size:14px;font-weight:500;color:var(--muted);
+}
+.trust-item i{font-size:18px;color:var(--g)}
+
+/* ========== FEATURES ========== */
+.features{padding:100px 5%}
+.features-header{text-align:center;margin-bottom:64px}
+.features-header .section-sub{margin:0 auto}
+.feat-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+.feat-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:28px;
+  transition:transform .25s,box-shadow .25s,border-color .25s;
+  position:relative;
+  overflow:hidden;
+}
+.feat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--g),var(--gd));
+  opacity:0;transition:opacity .3s;
+}
+.feat-card:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(4,120,87,.12);border-color:rgba(16,185,129,.3)}
+.feat-card:hover::before{opacity:1}
+.feat-icon{
+  width:48px;height:48px;
+  background:linear-gradient(135deg,var(--gl),var(--gs));
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;
+  font-size:20px;color:var(--gdd);
+}
+.feat-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:-0.3px}
+.feat-desc{font-size:14px;line-height:1.65;color:var(--muted);font-weight:300}
+.feat-tag{
+  margin-top:16px;display:inline-block;
+  background:var(--gs);color:var(--gdd);
+  padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;
+}
+
+/* ========== HOW IT WORKS ========== */
+.how{padding:100px 5%;background:linear-gradient(180deg,#f0fdf4 0%,#ffffff 100%)}
+.how-inner{max-width:1200px;margin:0 auto}
+.how-header{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:64px}
+.how-steps{display:flex;flex-direction:column;gap:0}
+.how-step{
+  display:flex;gap:20px;align-items:flex-start;
+  padding:24px 0;
+  border-bottom:1px solid var(--border);
+}
+.how-step:last-child{border-bottom:none}
+.step-num{
+  width:40px;height:40px;
+  background:var(--gdd);color:#fff;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;
+  flex-shrink:0;
+  box-shadow:0 4px 12px rgba(4,120,87,.3);
+}
+.step-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.step-desc{font-size:14px;color:var(--muted);line-height:1.6;font-weight:300}
+/* how visual */
+.how-visual{position:relative}
+.how-terminal{
+  background:var(--ink);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,.2);
+}
+.how-terminal-bar{
+  background:#1e2e24;padding:12px 16px;
+  display:flex;align-items:center;gap:8px;
+}
+.term-dots{display:flex;gap:6px}
+.term-dot{width:11px;height:11px;border-radius:50%}
+.term-dot:nth-child(1){background:#ff5f57}
+.term-dot:nth-child(2){background:#ffbd2e}
+.term-dot:nth-child(3){background:#28c840}
+.term-label{color:#64896e;font-size:12px;margin-left:6px;font-family:monospace}
+.how-terminal-body{padding:20px;font-family:monospace;font-size:13px;line-height:1.9;color:#64b98c}
+.term-line{display:flex;gap:10px;align-items:flex-start}
+.term-prompt{color:#28854c;flex-shrink:0}
+.term-cmd{color:#a8f0c0}
+.term-out{color:#4a7a5a;margin-left:20px;font-size:12px}
+.term-cursor{display:inline-block;width:8px;height:14px;background:#28c840;animation:blink 1.2s step-end infinite;vertical-align:middle;margin-left:2px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ========== LISENSI / PRICING ========== */
+.pricing{padding:100px 5%}
+.pricing-header{text-align:center;margin-bottom:64px}
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:28px;max-width:800px;margin:0 auto;
+}
+.price-card{
+  background:var(--white);
+  border:1.5px solid var(--border);
+  border-radius:20px;
+  padding:36px;
+  position:relative;
+  transition:transform .25s,box-shadow .25s;
+}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 20px 48px rgba(4,120,87,.1)}
+.price-card.featured{
+  background:linear-gradient(160deg,var(--gdd) 0%,#065f46 100%);
+  border-color:transparent;
+  color:#fff;
+}
+/* explicit overrides below — no blanket * rule */
+.price-badge{
+  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+  background:var(--g);color:#fff;
+  padding:4px 16px;border-radius:20px;font-size:11px;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:0.5px;white-space:nowrap;
+}
+.price-tier{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.price-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:38px;font-weight:800;letter-spacing:-2px;color:var(--ink)}
+.price-period{font-size:14px;font-weight:300;color:var(--muted);margin-left:4px}
+.price-desc{font-size:14px;color:var(--muted);margin:12px 0 24px;font-weight:300;line-height:1.6}
+.price-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.price-list li{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:400}
+.price-list li i{font-size:13px;color:var(--g);flex-shrink:0}
+.price-card.featured .price-list li i{color:#86efac}
+.price-card.featured .price-tier{color:rgba(255,255,255,.7)!important}
+.price-card.featured .price-num{color:#fff!important}
+.price-card.featured .price-desc{color:rgba(255,255,255,.7)!important}
+.price-card.featured .price-list li{color:#fff!important}
+.price-card.featured .price-badge{color:#fff!important}
+.btn-price{
+  display:block;text-align:center;text-decoration:none;
+  padding:13px;border-radius:var(--r);
+  font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;
+  border:2px solid var(--gdd);color:var(--gdd);
+  transition:all .2s;
+}
+.btn-price:hover{background:var(--gdd);color:#fff}
+.price-card.featured .btn-price{background:#fff!important;color:var(--gdd)!important;border-color:#fff!important;font-weight:700}
+.price-card.featured .btn-price:hover{background:var(--gl)!important;border-color:var(--gl)!important}
+
+/* ========== FITUR DETAIL (accordion) ========== */
+.detail{padding:100px 5%;background:var(--gs)}
+.detail-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.detail-left .section-sub{margin-bottom:32px}
+.accordion-item{border-bottom:1px solid var(--border)}
+.accordion-btn{
+  width:100%;background:none;border:none;cursor:pointer;
+  padding:18px 0;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:15px;font-weight:600;color:var(--ink);font-family:'DM Sans',sans-serif;
+  text-align:left;transition:color .2s;
+}
+.accordion-btn:hover{color:var(--g)}
+.accordion-btn i.acc-icon{font-size:12px;color:var(--faint);transition:transform .3s}
+.accordion-item.open .accordion-btn i.acc-icon{transform:rotate(180deg)}
+.accordion-body{font-size:14px;color:var(--muted);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s}
+.accordion-item.open .accordion-body{max-height:200px;padding-bottom:16px}
+
+.detail-right{position:sticky;top:88px}
+.detail-visual{
+  background:var(--white);border-radius:16px;
+  border:1px solid var(--border);
+  overflow:hidden;
+  box-shadow:0 12px 36px rgba(4,120,87,.1);
+}
+.detail-tabs{
+  display:flex;border-bottom:1px solid var(--border);background:var(--gs);
+}
+.detail-tab{
+  flex:1;padding:12px;font-size:12px;font-weight:600;color:var(--muted);
+  text-align:center;cursor:pointer;transition:all .2s;border:none;background:none;
+  font-family:'DM Sans',sans-serif;
+}
+.detail-tab.active{background:#fff;color:var(--gdd);box-shadow:inset 0 -2px 0 var(--g)}
+.detail-content{padding:20px;min-height:220px}
+.tab-pane{display:none;animation:fadeIn .3s ease}
+.tab-pane.active{display:block}
+
+/* mini soal preview */
+.soal-preview{border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;background:var(--white)}
+.soal-num{font-size:11px;color:var(--faint);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.4px}
+.soal-text{font-size:13px;color:var(--ink);line-height:1.5;margin-bottom:12px}
+.soal-options{display:flex;flex-direction:column;gap:6px}
+.soal-opt{
+  display:flex;align-items:center;gap:8px;padding:7px 10px;
+  border-radius:6px;border:1px solid var(--border);font-size:12px;cursor:default;
+}
+.soal-opt.correct{background:var(--gl);border-color:var(--g);color:var(--gdd);font-weight:600}
+.opt-letter{width:20px;height:20px;background:var(--gs);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.soal-opt.correct .opt-letter{background:var(--g);color:#fff}
+
+/* nilai chart mini */
+.nilai-bars{display:flex;align-items:flex-end;gap:8px;height:80px;margin-top:10px}
+.nilai-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.nilai-bar{
+  width:100%;background:linear-gradient(180deg,var(--g),var(--gd));
+  border-radius:4px 4px 0 0;min-height:8px;
+}
+.nilai-bar-label{font-size:9px;color:var(--muted);text-align:center}
+.nilai-bar-val{font-size:11px;font-weight:700;color:var(--gdd);font-family:'Plus Jakarta Sans',sans-serif}
+
+/* monitoring row */
+.monitor-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;background:var(--gs);border-radius:8px;margin-bottom:8px;font-size:12px;
+}
+.monitor-name{color:var(--ink);font-weight:500}
+.monitor-progress{flex:1;margin:0 12px;background:var(--border);border-radius:10px;height:6px;overflow:hidden}
+.monitor-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--gdd));border-radius:10px}
+.monitor-status{font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px}
+
+/* ========== CTA ========== */
+.cta{
+  padding:100px 5%;
+  background:linear-gradient(135deg,var(--gdd) 0%,#028040 50%,var(--g) 100%);
+  position:relative;overflow:hidden;
+}
+.cta::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.cta-inner{
+  max-width:700px;margin:0 auto;text-align:center;position:relative;z-index:1;
+}
+.cta-title{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(30px,4vw,52px);
+  font-weight:800;letter-spacing:-1.2px;
+  color:#fff;margin-bottom:18px;line-height:1.05;
+}
+.cta-sub{font-size:17px;color:rgba(255,255,255,.8);font-weight:300;line-height:1.7;margin-bottom:36px}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-cta-white{
+  display:inline-flex;align-items:center;gap:9px;
+  background:#fff;color:var(--gdd);
+  padding:14px 28px;border-radius:var(--r);
+  font-size:15px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;
+  text-decoration:none;
+  box-shadow:0 4px 16px rgba(0,0,0,.15);
+  transition:all .2s;
+}
+.btn-cta-white:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.2)}
+.btn-cta-outline{
+  display:inline-flex;align-items:center;gap:9px;
+  background:transparent;color:#fff;
+  padding:13px 24px;border-radius:var(--r);
+  font-size:15px;font-weight:600;
+  text-decoration:none;
+  border:1.5px solid rgba(255,255,255,.5);
+  transition:all .2s;
+}
+.btn-cta-outline:hover{background:rgba(255,255,255,.1);border-color:#fff}
+.cta-wa{
+  margin-top:28px;
+  color:rgba(255,255,255,.7);font-size:13px;
+}
+.cta-wa a{color:#fff;font-weight:600;text-decoration:none}
+.cta-wa a:hover{text-decoration:underline}
+
+/* ========== FOOTER ========== */
+footer{
+  background:var(--ink);
+  padding:60px 5% 32px;
+  color:rgba(255,255,255,.5);
+}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-top{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;
+  margin-bottom:48px;
+}
+.footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:14px;text-decoration:none}
+.footer-brand img{width:32px;height:32px;filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(90deg);opacity:.85}
+.footer-brand-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:17px;color:#fff;letter-spacing:-0.5px}
+.footer-about{font-size:13px;line-height:1.7;color:rgba(255,255,255,.45)}
+.footer-col-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:16px}
+.footer-link{display:block;font-size:13px;color:rgba(255,255,255,.45);text-decoration:none;margin-bottom:10px;transition:color .2s}
+.footer-link:hover{color:var(--g)}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:gap(12px);
+  font-size:13px;
+}
+.footer-copy{color:rgba(255,255,255,.35)}
+.footer-socials{display:flex;gap:12px}
+.footer-social{
+  width:34px;height:34px;
+  background:rgba(255,255,255,.07);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.5);font-size:14px;
+  text-decoration:none;transition:all .2s;
+}
+.footer-social:hover{background:var(--g);color:#fff}
+
+/* ========== MOBILE NAV ========== */
+.mobile-menu{
+  display:none;flex-direction:column;
+  position:fixed;top:68px;left:0;right:0;z-index:99;
+  background:#fff;border-bottom:1px solid var(--border);
+  padding:20px 5%;gap:16px;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:15px;font-weight:500;color:var(--ink);text-decoration:none;padding:8px 0;border-bottom:1px solid var(--border)}
+.mobile-menu a:last-child{border-bottom:none}
+
+/* ========== SCROLL REVEAL ========== */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:1024px){
+  .feat-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .hero-inner{grid-template-columns:1fr;gap:40px}
+  .hero-visual{display:none}
+  .how-header{grid-template-columns:1fr}
+  .how-visual{display:none}
+  .detail-inner{grid-template-columns:1fr}
+  .detail-right{display:none}
+  .pricing-grid{grid-template-columns:1fr}
+  .feat-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .nav-hamburger{display:block}
+  .hero-stats{gap:20px}
+  .trust-inner{gap:24px}
+  .footer-bottom{flex-direction:column;gap:16px;text-align:center}
+}
+@media(max-width:480px){
+  .footer-top{grid-template-columns:1fr}
+  .pricing-grid{max-width:100%}
+}
+
+/* ========== SVG ICONS ========== */
+.svg-icon{display:inline-block;width:1em;height:1em;vertical-align:-0.125em;flex-shrink:0}
+.svg-icon.icon-sm{width:0.85em;height:0.85em}
+.svg-icon.icon-lg{width:1.25em;height:1.25em}
+.svg-icon.icon-xl{width:1.5em;height:1.5em}
+.feat-icon .svg-icon{width:22px;height:22px}
+.mock-card-icon .svg-icon{width:14px;height:14px}
+.fp-icon .svg-icon{width:13px;height:13px}
+.trust-item .svg-icon{width:18px;height:18px;flex-shrink:0}
+.section-tag .svg-icon{width:11px;height:11px}
+.accordion-btn .svg-icon.acc-icon{width:13px;height:13px;flex-shrink:0;transition:transform .3s}
+.accordion-item.open .accordion-btn .svg-icon.acc-icon{transform:rotate(180deg)}
+.price-list .svg-icon{width:14px;height:14px;flex-shrink:0}
+.hero-badge .svg-icon{width:11px;height:11px}
+.nav-cta .svg-icon{width:14px;height:14px}
+.btn-hero-primary .svg-icon,.btn-hero-secondary .svg-icon{width:16px;height:16px}
+.btn-cta-white .svg-icon,.btn-cta-outline .svg-icon{width:16px;height:16px}
+.footer-social .svg-icon{width:16px;height:16px}
+.footer-link .svg-icon{width:14px;height:14px}
+.soal-opt .svg-icon{width:10px;height:10px;margin-left:auto;flex-shrink:0}
+
+/* ========== STEP COPY BUTTON ========== */
+.btn-step-copy{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:12px;
+  padding:9px 18px;
+  background:var(--gdd);color:#fff;
+  border:none;border-radius:8px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:13px;font-weight:600;
+  text-decoration:none;cursor:pointer;
+  box-shadow:0 2px 10px rgba(4,120,87,.25);
+  transition:background .2s,transform .15s,box-shadow .2s;
+}
+.btn-step-copy:hover{background:var(--g);transform:translateY(-1px);box-shadow:0 5px 16px rgba(4,120,87,.32)}
+.btn-step-copy:active{transform:scale(.98)}
+.btn-step-copy .svg-icon{width:14px;height:14px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<!-- ========== NAV ========== -->
+<nav id="main-nav">
+  <a href="#" class="nav-brand">
+    <img src="https://i.imgur.com/dYwR4Jp.png" alt="Emes CBT">
+    <div>
+      <span class="nav-brand-text">Emes CBT</span>
+      <span class="nav-brand-sub">Emes EduTech</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#fitur">Fitur</a>
+    <a href="#cara-kerja">Cara Kerja</a>
+    <a href="#lisensi">Lisensi</a>
+    <a href="#kontak">Kontak</a>
+  </div>
+  <a href="#cta" class="nav-cta"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.5-1.5 3.5 0 5 1.5 1.5 3.5 1.5 5 0L19 12 12 5 4.5 16.5z"/><path d="M8 16L4 20"/><path d="M17 7l.5-4.5L22 2l-.5 4.5z"/></svg> Mulai Sekarang</a>
+  <button class="nav-hamburger" id="hamburger-btn" aria-label="Menu">
+    <svg id="icon-bars" class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <svg id="icon-times" class="svg-icon" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#fitur" onclick="closeMobileMenu()">Fitur</a>
+  <a href="#cara-kerja" onclick="closeMobileMenu()">Cara Kerja</a>
+  <a href="#lisensi" onclick="closeMobileMenu()">Lisensi</a>
+  <a href="#kontak" onclick="closeMobileMenu()">Kontak</a>
+  <a href="#cta" onclick="closeMobileMenu()" style="color:var(--gdd);font-weight:700;border:none;">Mulai Sekarang</a>
+</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Emes CBT v7.0 — Sekarang Tersedia
+      </div>
+      <h1 class="hero-headline">
+        Ujian Digital<br>Berbasis <span class="hl">Google Sheets</span><br>Tanpa Ribet
+      </h1>
+      <p class="hero-sub">
+        Platform Computer-Based Test yang berjalan sepenuhnya di atas Google Sheets &amp; Apps Script. Tidak perlu server, tidak perlu hosting. Satu spreadsheet, segalanya beres.
+      </p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn-hero-primary">
+          <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.5-1.5 3.5 0 5 1.5 1.5 3.5 1.5 5 0L19 12 12 5 4.5 16.5z"/><path d="M8 16L4 20"/><path d="M17 7l.5-4.5L22 2l-.5 4.5z"/></svg> Dapatkan Sekarang
+        </a>
+        <a href="#fitur" class="btn-hero-secondary">
+          <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg> Lihat Fitur
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num">100%</div>
+          <div class="hero-stat-label">Berbasis Google</div>
+        </div>
+        <div style="width:1px;background:var(--border)"></div>
+        <div>
+          <div class="hero-stat-num">0 Rp</div>
+          <div class="hero-stat-label">Biaya Server</div>
+        </div>
+        <div style="width:1px;background:var(--border)"></div>
+        <div>
+          <div class="hero-stat-num">7.0</div>
+          <div class="hero-stat-label">Versi Terbaru</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Mockup -->
+    <div class="hero-visual">
+      <div class="floating-pill fp1">
+        <div class="fp-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        Nilai otomatis terkalkulasi
+      </div>
+      <div class="dashboard-mockup">
+        <div class="mock-topbar">
+          <div class="mock-dots">
+            <div class="mock-dot"></div>
+            <div class="mock-dot"></div>
+            <div class="mock-dot"></div>
+          </div>
+          <span class="mock-title-bar">EMES CBT — Dashboard Admin</span>
+        </div>
+        <div class="mock-body">
+          <div class="mock-grid">
+            <div class="mock-card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div class="mock-card-label">Total Siswa</div>
+                  <div class="mock-card-num">248</div>
+                </div>
+                <div class="mock-card-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              </div>
+              <div class="mock-progress-bar" style="margin-top:8px"><div class="mock-progress-fill" style="width:72%"></div></div>
+            </div>
+            <div class="mock-card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div class="mock-card-label">Paket Ujian</div>
+                  <div class="mock-card-num">12</div>
+                </div>
+                <div class="mock-card-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg></div>
+              </div>
+              <div class="mock-progress-bar" style="margin-top:8px"><div class="mock-progress-fill" style="width:45%"></div></div>
+            </div>
+            <div class="mock-card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div class="mock-card-label">Sedang Ujian</div>
+                  <div class="mock-card-num">34</div>
+                </div>
+                <div class="mock-card-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+              </div>
+              <div class="mock-progress-bar" style="margin-top:8px"><div class="mock-progress-fill" style="width:88%"></div></div>
+            </div>
+            <div class="mock-card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div class="mock-card-label">Bank Soal</div>
+                  <div class="mock-card-num">1.2K</div>
+                </div>
+                <div class="mock-card-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+              </div>
+              <div class="mock-progress-bar" style="margin-top:8px"><div class="mock-progress-fill" style="width:60%"></div></div>
+            </div>
+          </div>
+          <div class="mock-list-label">Monitoring Real-time</div>
+          <div class="mock-list-item">
+            <span class="name">Ahmad Fauzi</span>
+            <span class="mock-badge mb-green">Selesai</span>
+          </div>
+          <div class="mock-list-item">
+            <span class="name">Siti Rahma</span>
+            <span class="mock-badge mb-yellow">38/50 soal</span>
+          </div>
+          <div class="mock-list-item">
+            <span class="name">Budi Santoso</span>
+            <span class="mock-badge mb-gray">Belum mulai</span>
+          </div>
+        </div>
+      </div>
+      <div class="floating-pill fp2">
+        <div class="fp-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        Anti-kecurangan aktif
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TRUST BAR ========== -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Berjalan di Google Apps Script</div>
+    <div class="trust-item"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg> Data tersimpan di Google Sheets</div>
+    <div class="trust-item"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg> Tidak perlu hosting</div>
+    <div class="trust-item"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Keamanan Google</div>
+    <div class="trust-item"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> Responsive &amp; mobile-friendly</div>
+  </div>
+</div>
+
+<!-- ========== FITUR ========== -->
+<section class="features" id="fitur">
+  <div class="section-inner">
+    <div class="features-header reveal">
+      <div class="section-tag"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4.5 13.5H11L10 22l9.5-11.5H13.5L13 2z"/></svg> Fitur Lengkap</div>
+      <h2 class="section-title">Semua yang dibutuhkan<br>untuk ujian digital</h2>
+      <p class="section-sub">Dari manajemen soal hingga cetak dokumen resmi, semuanya ada dalam satu aplikasi berbasis Google Sheets.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+        <div class="feat-title">Bank Soal & Paket Ujian</div>
+        <div class="feat-desc">Kelola ribuan soal pilihan ganda dan uraian. Buat paket ujian dengan pengacakan soal & jawaban otomatis per siswa.</div>
+        <span class="feat-tag">Import CSV</span>
+      </div>
+      <div class="feat-card reveal" style="transition-delay:.05s">
+        <div class="feat-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="feat-title">Monitoring Real-time</div>
+        <div class="feat-desc">Pantau progress setiap siswa secara live. Lihat berapa soal sudah dijawab, durasi, dan status ujian setiap peserta.</div>
+        <span class="feat-tag">Live Update</span>
+      </div>
+      <div class="feat-card reveal" style="transition-delay:.1s">
+        <div class="feat-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <div class="feat-title">Rekap Nilai Otomatis</div>
+        <div class="feat-desc">Nilai terhitung otomatis saat submit. Export ke CSV, cetak rekap nilai, dan lihat statistik per paket ujian.</div>
+        <span class="feat-tag">Auto Scoring</span>
+      </div>
+      <div class="feat-card reveal" style="transition-delay:.15s">
+        <div class="feat-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h8"/><path d="M3 21h18"/><path d="M14 21v-4"/><path d="M14 7l-5 5"/><path d="M9 7h5v5"/><circle cx="17" cy="7" r="3"/></svg></div>
+        <div class="feat-title">Analisa Butir Soal</div>
+        <div class="feat-desc">Analisis tingkat kesulitan, daya beda, dan efektivitas pengecoh setiap butir soal untuk meningkatkan kualitas ujian.</div>
+        <span class="feat-tag">Lisensi</span>
+      </div>
+      <div class="feat-card reveal" style="transition-delay:.2s">
+        <div class="feat-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div>
+        <div class="feat-title">Cetak Dokumen Resmi</div>
+        <div class="feat-desc">Generate daftar hadir, berita acara, dan rekap nilai dalam format siap cetak dengan logo dan identitas sekolah.</div>
+        <span class="feat-tag">Lisensi</span>
+      </div>
+      <div class="feat-card reveal" style="transition-delay:.25s">
+        <div class="feat-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+        <div class="feat-title">Koreksi Uraian Manual</div>
+        <div class="feat-desc">Antarmuka khusus untuk koreksi soal uraian. Guru dapat memberi skor secara manual dengan tampilan yang nyaman.</div>
+        <span class="feat-tag">Multi-guru</span>
+      </div>
+      <div class="feat-card reveal" style="transition-delay:.3s">
+        <div class="feat-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 11V5"/><circle cx="12" cy="3" r="2"/><circle cx="8" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/><path d="M8 20v1M16 20v1"/></svg></div>
+        <div class="feat-title">FAQ Chatbot Siswa</div>
+        <div class="feat-desc">Kelola basis pengetahuan untuk chatbot bantuan siswa. Siswa bisa bertanya seputar ujian tanpa mengganggu admin.</div>
+        <span class="feat-tag">Built-in</span>
+      </div>
+      <div class="feat-card reveal" style="transition-delay:.35s">
+        <div class="feat-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg></div>
+        <div class="feat-title">Multi-role Admin</div>
+        <div class="feat-desc">Tiga level akses: Administrator penuh, Guru (akses nilai & soal), dan Pengawas (monitoring saja). Kelola tim dengan mudah.</div>
+        <span class="feat-tag">RBAC</span>
+      </div>
+      <div class="feat-card reveal" style="transition-delay:.4s">
+        <div class="feat-icon"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="feat-title">Anti-Kecurangan</div>
+        <div class="feat-desc">Token ujian, blokir login ganda (satu akun satu perangkat), CAPTCHA, dan deteksi tab switching untuk menjaga integritas ujian.</div>
+        <span class="feat-tag">Keamanan</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CARA KERJA ========== -->
+<section class="how" id="cara-kerja">
+  <div class="how-inner">
+    <div class="how-header reveal">
+      <div>
+        <div class="section-tag"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg> Cara Kerja</div>
+        <h2 class="section-title">Setup dalam<br>hitungan menit</h2>
+        <p class="section-sub">Tidak perlu hosting, tidak perlu domain, tidak perlu database. Cukup Google Spreadsheet Anda.</p>
+      </div>
+      <div class="how-visual">
+        <div class="how-terminal">
+          <div class="how-terminal-bar">
+            <div class="term-dots">
+              <div class="term-dot"></div>
+              <div class="term-dot"></div>
+              <div class="term-dot"></div>
+            </div>
+            <span class="term-label">Apps Script Console</span>
+          </div>
+          <div class="how-terminal-body">
+            <div class="term-line">
+              <span class="term-prompt">›</span>
+              <span class="term-cmd">Spreadsheet template dibuka</span>
+            </div>
+            <div class="term-line"><span class="term-out">✓ Sheet siswa, soal, paket siap</span></div>
+            <div class="term-line">
+              <span class="term-prompt">›</span>
+              <span class="term-cmd">Deploy sebagai Web App</span>
+            </div>
+            <div class="term-line"><span class="term-out">✓ URL web app dibuat</span></div>
+            <div class="term-line">
+              <span class="term-prompt">›</span>
+              <span class="term-cmd">Setup awal dijalankan</span>
+            </div>
+            <div class="term-line"><span class="term-out">✓ Admin pertama terdaftar</span></div>
+            <div class="term-line">
+              <span class="term-prompt">›</span>
+              <span class="term-cmd">Emes CBT siap digunakan</span>
+            </div>
+            <div class="term-line"><span class="term-out">✓ Login & mulai ujian <span class="term-cursor"></span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="how-steps reveal">
+      <div class="how-step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Salin Template Spreadsheet</div>
+          <div class="step-desc">Copy template Google Sheets yang sudah disiapkan ke akun Google Anda. Semua sheet dan struktur data sudah ada.</div>
+          <a class="btn-step-copy" href="https://docs.google.com/spreadsheets/d/1dmPcoZAOanyhjkmyKupXqFpr0LuCX6KKXu4DkK8pxFw/copy" target="_blank" rel="noopener">
+            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 3h5v2h-5V6zm0 4h5v2h-5v-2zm0 4h5v2h-5v-2zM7 6h3v2H7V6zm0 4h3v2H7v-2zm0 4h3v2H7v-2z"/></svg> Salin Aplikasi ke Google Drive
+          </a>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Pasang Library & Deploy</div>
+          <div class="step-desc">Tambahkan Library EmesCBTApp ke Apps Script, lalu deploy spreadsheet sebagai Web App. Cukup dua baris kode.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Jalankan Setup Awal</div>
+          <div class="step-desc">Buka URL web app, jalankan setup otomatis untuk membuat akun admin pertama dan konfigurasi dasar sistem.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Input Data & Mulai Ujian</div>
+          <div class="step-desc">Import data siswa via CSV, buat bank soal, susun paket ujian, bagikan link ke siswa. Ujian bisa langsung dimulai.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FITUR DETAIL ========== -->
+<section class="detail" id="detail">
+  <div class="detail-inner section-inner">
+    <div class="detail-left reveal">
+      <div class="section-tag"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> Lebih Dalam</div>
+      <h2 class="section-title">Fitur yang<br>benar-benar lengkap</h2>
+      <p class="section-sub">Didesain untuk kebutuhan ujian nyata di sekolah Indonesia.</p>
+      <div style="margin-top:32px">
+        <div class="accordion-item open">
+          <button class="accordion-btn" onclick="toggleAcc(this)">
+            <span><svg class="svg-icon" style="color:var(--g);margin-right:10px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>Pengacakan Soal Unik per Siswa</span>
+            <svg class="svg-icon acc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">Setiap siswa mendapat urutan soal dan pilihan jawaban yang berbeda secara acak. Meminimalkan mencontek tanpa perlu buat soal berbeda.</div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAcc(this)">
+            <span><svg class="svg-icon" style="color:var(--g);margin-right:10px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>Token Ujian per Paket</span>
+            <svg class="svg-icon acc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">Aktifkan token untuk paket ujian tertentu. Siswa hanya bisa masuk ujian setelah memasukkan token yang dibagikan pengawas di ruang ujian.</div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAcc(this)">
+            <span><svg class="svg-icon" style="color:var(--g);margin-right:10px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Auto-Save & Lanjut Ujian</span>
+            <svg class="svg-icon acc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">Jawaban siswa tersimpan otomatis. Jika browser tutup atau koneksi putus, siswa dapat melanjutkan dari soal terakhir (dapat dikonfigurasi admin).</div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAcc(this)">
+            <span><svg class="svg-icon" style="color:var(--g);margin-right:10px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Backup Data Otomatis</span>
+            <svg class="svg-icon acc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">Salin seluruh spreadsheet ke Google Drive dengan satu klik sebagai cadangan data. Tidak ada data yang hilang.</div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAcc(this)">
+            <span><svg class="svg-icon" style="color:var(--g);margin-right:10px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Log Aktivitas Lengkap</span>
+            <svg class="svg-icon acc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">Setiap aksi admin dan siswa tercatat. Lacak siapa mengubah apa dan kapan untuk keperluan audit dan keamanan.</div>
+        </div>
+      </div>
+    </div>
+    <div class="detail-right reveal" style="transition-delay:.1s">
+      <div class="detail-visual">
+        <div class="detail-tabs">
+          <button class="detail-tab active" onclick="switchTab(this,'tab-soal')">Bank Soal</button>
+          <button class="detail-tab" onclick="switchTab(this,'tab-nilai')">Rekap Nilai</button>
+          <button class="detail-tab" onclick="switchTab(this,'tab-monitor')">Monitoring</button>
+        </div>
+        <div class="detail-content">
+          <!-- Tab: Bank Soal -->
+          <div class="tab-pane active" id="tab-soal">
+            <div class="soal-preview">
+              <div class="soal-num">Soal 12 · Matematika · Mudah</div>
+              <div class="soal-text">Hasil dari 2<sup>3</sup> × 3<sup>2</sup> adalah...</div>
+              <div class="soal-options">
+                <div class="soal-opt"><div class="opt-letter">A</div>48</div>
+                <div class="soal-opt correct"><div class="opt-letter">B</div>72 <svg class="svg-icon" style="margin-left:auto;font-size:10px;color:var(--g)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="soal-opt"><div class="opt-letter">C</div>64</div>
+                <div class="soal-opt"><div class="opt-letter">D</div>96</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-size:11px;background:var(--gs);color:var(--gdd);padding:3px 10px;border-radius:20px;font-weight:600;">1.248 soal tersimpan</span>
+              <span style="font-size:11px;background:#fef3c7;color:#92400e;padding:3px 10px;border-radius:20px;font-weight:600;">12 paket aktif</span>
+            </div>
+          </div>
+          <!-- Tab: Rekap Nilai -->
+          <div class="tab-pane" id="tab-nilai">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Matematika — Kelas X (34 peserta)</div>
+            <div class="nilai-bars">
+              <div class="nilai-bar-wrap"><div class="nilai-bar-val">3</div><div class="nilai-bar" style="height:20%"></div><div class="nilai-bar-label">40–59</div></div>
+              <div class="nilai-bar-wrap"><div class="nilai-bar-val">8</div><div class="nilai-bar" style="height:40%"></div><div class="nilai-bar-label">60–69</div></div>
+              <div class="nilai-bar-wrap"><div class="nilai-bar-val">14</div><div class="nilai-bar" style="height:70%"></div><div class="nilai-bar-label">70–79</div></div>
+              <div class="nilai-bar-wrap"><div class="nilai-bar-val">7</div><div class="nilai-bar" style="height:35%"></div><div class="nilai-bar-label">80–89</div></div>
+              <div class="nilai-bar-wrap"><div class="nilai-bar-val">2</div><div class="nilai-bar" style="height:10%"></div><div class="nilai-bar-label">90–100</div></div>
+            </div>
+            <div style="margin-top:12px;display:flex;gap:16px">
+              <div><div style="font-size:10px;color:var(--faint)">Rata-rata</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--gdd)">73.4</div></div>
+              <div><div style="font-size:10px;color:var(--faint)">Tertinggi</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--gdd)">95</div></div>
+              <div><div style="font-size:10px;color:var(--faint)">Lulus KKM</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--gdd)">88%</div></div>
+            </div>
+          </div>
+          <!-- Tab: Monitoring -->
+          <div class="tab-pane" id="tab-monitor">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Ujian Aktif · 34 peserta</div>
+            <div class="monitor-row">
+              <span class="monitor-name">Ahmad Fauzi</span>
+              <div class="monitor-progress"><div class="monitor-fill" style="width:100%"></div></div>
+              <span class="monitor-status mb-green">Selesai</span>
+            </div>
+            <div class="monitor-row">
+              <span class="monitor-name">Siti Rahma</span>
+              <div class="monitor-progress"><div class="monitor-fill" style="width:76%"></div></div>
+              <span class="monitor-status mb-yellow">38/50</span>
+            </div>
+            <div class="monitor-row">
+              <span class="monitor-name">Budi Santoso</span>
+              <div class="monitor-progress"><div class="monitor-fill" style="width:52%"></div></div>
+              <span class="monitor-status mb-yellow">26/50</span>
+            </div>
+            <div class="monitor-row">
+              <span class="monitor-name">Dewi Kusuma</span>
+              <div class="monitor-progress"><div class="monitor-fill" style="width:8%"></div></div>
+              <span class="monitor-status mb-gray">Baru mulai</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== LISENSI ========== -->
+<section class="pricing" id="lisensi">
+  <div class="section-inner">
+    <div class="pricing-header reveal">
+      <div class="section-tag"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> Lisensi</div>
+      <h2 class="section-title">Pilih paket<br>yang sesuai</h2>
+      <p class="section-sub" style="margin:0 auto">Emes CBT dapat digunakan gratis. Daftarkan NPSN untuk membuka fitur cetak dokumen resmi.</p>
+    </div>
+    <div class="pricing-grid reveal" style="transition-delay:.1s">
+      <div class="price-card">
+        <div class="price-tier">Dasar</div>
+        <div class="price-num">Gratis<span class="price-period">selamanya</span></div>
+        <div class="price-desc">Semua fitur inti ujian digital tanpa biaya apapun.</div>
+        <ul class="price-list">
+          <li><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Ujian pilihan ganda & uraian</li>
+          <li><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Monitoring real-time</li>
+          <li><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Rekap & export nilai CSV</li>
+          <li><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Multi-role admin</li>
+          <li><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Analisa butir soal</li>
+          <li><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Anti-kecurangan & token</li>
+          <li><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Backup Google Drive</li>
+          <li><svg class="svg-icon" style="color:var(--faint)!important" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span style="color:var(--faint)">Cetak dokumen resmi</span></li>
+        </ul>
+        <a href="#cta" class="btn-price">Mulai Gratis</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge"><svg class="svg-icon" style="width:11px;height:11px;color:#fff;fill:#fff;margin-right:4px;vertical-align:-1px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Terdaftar</div>
+        <div class="price-tier" style="color:rgba(255,255,255,.6)">Berlisensi</div>
+        <div class="price-num" style="color:#fff">NPSN<span class="price-period" style="color:rgba(255,255,255,.6)">didaftarkan</span></div>
+        <div class="price-desc" style="color:rgba(255,255,255,.65)">Daftarkan NPSN sekolah untuk membuka semua fitur premium.</div>
+        <ul class="price-list">
+          <li><svg class="svg-icon" style="color:#86efac!important" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Semua fitur Dasar</li>
+          <li><svg class="svg-icon" style="color:#86efac!important" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cetak Daftar Hadir resmi</li>
+          <li><svg class="svg-icon" style="color:#86efac!important" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cetak Berita Acara ujian</li>
+          <li><svg class="svg-icon" style="color:#86efac!important" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cetak Rekap Nilai formal</li>
+          <li><svg class="svg-icon" style="color:#86efac!important" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Export CSV analisa butir</li>
+          <li><svg class="svg-icon" style="color:#86efac!important" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Badge "Berlisensi" di dokumen</li>
+          <li><svg class="svg-icon" style="color:#86efac!important" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Prioritas dukungan teknis</li>
+        </ul>
+        <a href="#kontak" class="btn-price">Daftarkan NPSN</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="cta" id="cta">
+  <div class="cta-inner reveal">
+    <h2 class="cta-title">Siap memulai ujian digital di sekolah Anda?</h2>
+    <p class="cta-sub">Hubungi pengembang untuk mendapatkan akses template, panduan setup, dan dukungan teknis langsung via WhatsApp.</p>
+    <div class="cta-actions">
+      <a href="https://wa.me/6285784652700?text=Halo%2C%20saya%20ingin%20mendapatkan%20Emes%20CBT%20untuk%20sekolah%20saya." target="_blank" class="btn-cta-white">
+        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg> Hubungi via WhatsApp
+      </a>
+      <a href="#fitur" class="btn-cta-outline">
+        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Pelajari Fitur
+      </a>
+    </div>
+    <div class="cta-wa">Langsung terhubung ke developer · <a href="https://wa.me/6285784652700" target="_blank">+62 857-8465-2700</a></div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer id="kontak">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <a href="#" class="footer-brand">
+          <img src="https://i.imgur.com/dYwR4Jp.png" alt="Emes CBT">
+          <span class="footer-brand-name">Emes CBT</span>
+        </a>
+        <p class="footer-about">Platform Computer-Based Test berbasis Google Sheets & Apps Script. Dibangun oleh Emes EduTech untuk kebutuhan ujian digital sekolah Indonesia.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigasi</div>
+        <a href="#fitur" class="footer-link">Fitur</a>
+        <a href="#cara-kerja" class="footer-link">Cara Kerja</a>
+        <a href="#lisensi" class="footer-link">Lisensi</a>
+        <a href="#kontak" class="footer-link">Kontak</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Fitur</div>
+        <a href="#fitur" class="footer-link">Bank Soal</a>
+        <a href="#fitur" class="footer-link">Monitoring</a>
+        <a href="#fitur" class="footer-link">Rekap Nilai</a>
+        <a href="#fitur" class="footer-link">Analisa Butir</a>
+        <a href="#fitur" class="footer-link">Cetak Dokumen</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Kontak</div>
+        <a href="https://wa.me/6285784652700" target="_blank" class="footer-link"><svg class="svg-icon" style="margin-right:6px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>WhatsApp</a>
+        <div style="margin-top:16px;font-size:12px;color:rgba(255,255,255,.3)">Versi Aplikasi</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.6);font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;margin-top:4px">Emes CBT v7.0</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2024 Emes EduTech · Emes CBT · Hak Cipta Dilindungi</span>
+      <div class="footer-socials">
+        <a href="https://wa.me/6285784652700" target="_blank" class="footer-social"><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ========== HAMBURGER ICON TOGGLE ==========
+function updateHamburger(isOpen) {
+  document.getElementById('icon-bars').style.display = isOpen ? 'none' : '';
+  document.getElementById('icon-times').style.display = isOpen ? '' : 'none';
+}
+
+// ========== NAV SCROLL ==========
+const mainNav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  mainNav.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ========== HAMBURGER ==========
+const hamburger = document.getElementById('hamburger-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+  updateHamburger(mobileMenu.classList.contains('open'));
+});
+function closeMobileMenu() {
+  mobileMenu.classList.remove('open');
+  updateHamburger(false);
+}
+
+// ========== SCROLL REVEAL ==========
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ========== ACCORDION ==========
+function toggleAcc(btn) {
+  const item = btn.closest('.accordion-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+// ========== DETAIL TABS ==========
+function switchTab(btn, tabId) {
+  document.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+// ========== SMOOTH ANCHOR ==========
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>
